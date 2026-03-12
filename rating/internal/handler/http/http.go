@@ -55,6 +55,7 @@ func (h *Handler) Handle(w http.ResponseWriter, req *http.Request) {
 		if err := h.ctrl.PutRating(req.Context(), recordType, recordID, &model.Rating{UserID: userID, Value: model.RatingValue(v)}); err != nil {
 			log.Printf("Repository put error: %v\n", err)
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 	default:
 		w.WriteHeader(http.StatusBadRequest)
