@@ -5,7 +5,7 @@ import (
 	"errors"
 
 	"github.com/airlangga-hub/movie-app-microservices/metadata/internal/repository"
-	model "github.com/airlangga-hub/movie-app-microservices/metadata/pkg"
+	model "github.com/airlangga-hub/movie-app-microservices/metadata/pkg/model"
 )
 
 var ErrNotFound = errors.New("not found.")

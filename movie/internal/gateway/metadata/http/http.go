@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	model "github.com/airlangga-hub/movie-app-microservices/metadata/pkg"
+	model "github.com/airlangga-hub/movie-app-microservices/metadata/pkg/model"
 	"github.com/airlangga-hub/movie-app-microservices/movie/internal/gateway"
 )
 

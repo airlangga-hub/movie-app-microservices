@@ -5,7 +5,7 @@ import (
 	"sync"
 
 	"github.com/airlangga-hub/movie-app-microservices/metadata/internal/repository"
-	model "github.com/airlangga-hub/movie-app-microservices/metadata/pkg"
+	model "github.com/airlangga-hub/movie-app-microservices/metadata/pkg/model"
 )
 
 type Repository struct {
