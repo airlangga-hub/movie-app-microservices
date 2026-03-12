@@ -1,0 +1,56 @@
+package http
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+
+	"github.com/airlangga-hub/movie-app-microservices/movie/internal/gateway"
+	"github.com/airlangga-hub/movie-app-microservices/rating/pkg/model"
+)
+
+type Gateway struct {
+	addr string
+}
+
+func New(addr string) *Gateway {
+	return &Gateway{addr: addr}
+}
+
+func (g *Gateway) GetAggregatedRating(ctx context.Context, recordType model.RecordType, recordID model.RecordID) (float64, error) {
+	req, err := http.NewRequest(http.MethodGet, g.addr+"/rating", nil)
+
+	if err != nil {
+		return 0, err
+	}
+
+	req = req.WithContext(ctx)
+
+	values := req.URL.Query()
+
+	values.Add("type", fmt.Sprintf("%v", recordType))
+	values.Add("id", string(recordID))
+
+	req.URL.RawQuery = values.Encode()
+
+	resp, err := http.DefaultClient.Do(req)
+
+	if err != nil {
+		return 0, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return 0, gateway.ErrNotFound
+	} else if resp.StatusCode/100 != 2 {
+		return 0, fmt.Errorf("non 2xx response: %v", resp)
+	}
+	
+	var v float64
+	if err := json.NewDecoder(resp.Body).Decode(&v); err != nil {
+		return 0, err
+	}
+	
+	return v, nil
+}
